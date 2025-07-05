@@ -554,17 +554,27 @@ function getDirectoryObjectFromPath(fullPath) {
     return (obj && obj.type === "directory") ? obj : null;
 }
 
+let consoleOpenedOnce = false;
 function toggleConsoleVisibility() {
-    const isVisible = consoleContainer.style.display === "flex";
-    consoleContainer.style.display = isVisible ? "none" : "flex";
-    if (!isVisible) {
-        fitAddon.fit();
-        term.focus();
-        document.getElementById("taskDisplayContainer").style.display = "block";
-    } 
-    if (window.engine && window.scene && window.scene.activeCamera) {
-        const canvas = scene.getEngine().getRenderingCanvas();
-        if (isVisible && canvas) scene.activeCamera.attachControl(canvas, true);
-        else if (canvas) scene.activeCamera.detachControl(canvas);
+    const consoleContainer = document.getElementById("consoleContainer");
+    const shortcutHint = document.getElementById("shortcutHint");
+    
+    if (consoleContainer.style.display === "none") {
+        consoleContainer.style.display = "flex";
+        
+        // Se è la prima volta che apriamo la console, nascondi l'hint
+        if (!consoleOpenedOnce) {
+            consoleOpenedOnce = true;
+            
+            // Aggiungi una classe per l'animazione di fade-out
+            shortcutHint.classList.add('fade-out-hint');
+            
+            // Rimuovi l'elemento dopo l'animazione
+            setTimeout(() => {
+                shortcutHint.style.display = "none";
+            }, 500);
+        }
+    } else {
+        consoleContainer.style.display = "none";
     }
 }
