@@ -68,7 +68,54 @@ window.addEventListener('DOMContentLoaded', async () => {
         if (document.pointerLockElement !== canvas) {
             // console.log("Pointer unlocked");
         } else {
-            // console.log("Pointer locked");
+            // console.log("Pointer lockedc");
+        }
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.keyCode === 112) {
+            e.preventDefault();
+            
+            if (document.getElementById("consoleContainer").style.display === "none") {
+                toggleConsoleVisibility();
+            } else {
+                toggleConsoleVisibility();
+            }
+        }
+    });
+    
+
+    function showKeyFeedback() {
+        const feedback = document.createElement('div');
+        feedback.className = 'key-feedback';
+        
+        feedback.innerHTML = `
+            <div class="feedback-icon">✓</div>
+            <div class="feedback-text">Console attivata!</div>
+        `;
+        
+        document.body.appendChild(feedback);
+        
+        setTimeout(() => {
+            feedback.classList.add('fade-out');
+            setTimeout(() => {
+                if (document.body.contains(feedback)) {
+                    document.body.removeChild(feedback);
+                }
+            }, 500);
+        }, 1000);
+    }
+    
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'c') {
+            e.preventDefault();
+            
+            if (document.getElementById("consoleContainer").style.display === "none") {
+                toggleConsoleVisibility();
+                showKeyFeedback();
+            } else {
+                toggleConsoleVisibility();
+            }
         }
     });
 
