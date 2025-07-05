@@ -12,13 +12,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css" />
     <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
-
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div id="taskDisplayContainer" style="display: none;">
         <h4>Obiettivo Corrente:</h4>
         <p id="currentTaskText"></p>
     </div>
+    <div id="shortcutHint">
+    <div class="shortcut-icon">⌨️</div>
+    <div class="shortcut-text">Premi <span class="key">c</span> per aprire la Console,  Oppure punta il computer e schiaccia <span class="key">e</span></div>
+</div>
 
     <canvas id="renderCanvas"></canvas>
     <div id="consoleContainer" style="display: none;">
