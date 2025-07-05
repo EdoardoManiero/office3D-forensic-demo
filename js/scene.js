@@ -2,8 +2,10 @@ function createScene(engine, canvas) {
     const scene = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color3(0.2, 0.2, 0.3);
 
-    const camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 1.6, 0.5), scene);
-    camera.setTarget(new BABYLON.Vector3(0, 1.6, 2)); 
+    // MODIFICA: Posizione della camera più arretrata e orientata verso la scrivania
+    // La scrivania è a posizione (0, 0.75, 1.5), quindi orientiamo la camera verso quella direzione
+    const camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 1.6, -1.5), scene);
+    camera.setTarget(new BABYLON.Vector3(0, 1.2, 1.5)); 
     camera.attachControl(canvas, true);
     camera.ellipsoid = new BABYLON.Vector3(0.4, 0.8, 0.4); 
     camera.checkCollisions = true;
@@ -229,15 +231,6 @@ function createScene(engine, canvas) {
     chairPole.material = standMaterial; 
     chairPole.checkCollisions = true;
 
-   /*  const cabinetWidth = 0.5;
-    const cabinetHeight = 1.0;
-    const cabinetDepth = 0.4;
-    const cabinet = BABYLON.MeshBuilder.CreateBox("filingCabinet", {width: cabinetWidth, height: cabinetHeight, depth: cabinetDepth}, scene);
-    cabinet.position = new BABYLON.Vector3(-roomWidth/2 + cabinetWidth/2 + 0.3, cabinetHeight/2, 0.5);
-    const cabinetMaterial = new BABYLON.StandardMaterial("cabinetMat", scene);
-    cabinetMaterial.diffuseColor = new BABYLON.Color3(0.6, 0.6, 0.55);
-    cabinet.material = cabinetMaterial; cabinet.checkCollisions = true; */
-
     const windowPane = BABYLON.MeshBuilder.CreatePlane("windowPane", {width: 1.2, height: 0.8}, scene);
     windowPane.position = new BABYLON.Vector3(0, 1.5, wallS.position.z + wallThickness/2 + 0.01); 
     const windowMaterial = new BABYLON.StandardMaterial("windowMat", scene);
@@ -248,8 +241,6 @@ function createScene(engine, canvas) {
     scene.gravity = new BABYLON.Vector3(0, -0.98, 0); 
     scene.collisionsEnabled = true;
     
-
-
     // Prova diverse coordinate per posizionare il modello in un punto visibile
     const libraryPosition = new BABYLON.Vector3(
         roomWidth/2 - wallThickness/2 -0.3,            // Prova valori tra -2 e 2 per l'asse X
@@ -272,8 +263,6 @@ function createScene(engine, canvas) {
     );
     loadExternalModel(scene,"models/library.glb",libraryPosition, libraryRotation, libraryScaling)
 
-
-
     const couchPosition = new BABYLON.Vector3(
         1,            // Prova valori tra -2 e 2 per l'asse X
         0.3,     // Mantieni sopra la scrivania
@@ -286,9 +275,6 @@ function createScene(engine, canvas) {
     );
     const couchScaling = new BABYLON.Vector3(0.8, 0.8, 0.8);
     loadExternalModel(scene,"models/couch.glb",couchPosition, couchRotation, couchScaling)
-
-
-
     
     const lockerPosition = new BABYLON.Vector3(
         -2.2,            // Prova valori tra -2 e 2 per l'asse X
@@ -303,59 +289,12 @@ function createScene(engine, canvas) {
     const lockerScaling = new BABYLON.Vector3(1, 1, 1);
     loadExternalModel(scene,"models/locker.glb",lockerPosition, lockerRotation, lockerScaling)
 
-    const locker2Position = new BABYLON.Vector3(
-        -2.2,            // Prova valori tra -2 e 2 per l'asse X
-        0,     // Mantieni sopra la scrivania
-        2.2   // Prova valori tra -1 e 1 per l'asse Z
-    );
-    const locker2Rotation = new BABYLON.Vector3(
-        0,           // Rotazione sull'asse X
-        Math.PI/2,   // Rotazione sull'asse Y (90 gradi)
-        0            // Rotazione sull'asse Z
-    );
-    const locker2Scaling = new BABYLON.Vector3(1, 1, 1);
-    loadExternalModel(scene,"models/locker2.glb",locker2Position, locker2Rotation, locker2Scaling)
-
-
-    const wallpicsPosition = new BABYLON.Vector3(
-        -2.33,            // Prova valori tra -2 e 2 per l'asse X
-        2,     // Mantieni sopra la scrivania
-        -1  // Prova valori tra -1 e 1 per l'asse Z
-    );
-    const wallpicsRotation = new BABYLON.Vector3(
-        0,           // Rotazione sull'asse X
-        0,   // Rotazione sull'asse Y (90 gradi)
-        0            // Rotazione sull'asse Z
-    );
-    const wallpicsScaling = new BABYLON.Vector3(1, 1, 1);
-    loadExternalModel(scene,"models/wallPics.glb",wallpicsPosition, wallpicsRotation, wallpicsScaling)
-
-    
-
-    const penHolderPosition = new BABYLON.Vector3(
-        -0.6,            // Prova valori tra -2 e 2 per l'asse X
-        0.85,     // Mantieni sopra la scrivania
-        1.7  // Prova valori tra -1 e 1 per l'asse Z
-    );
-    const penHolderRotation = new BABYLON.Vector3(
-        0,           // Rotazione sull'asse X
-        0,   // Rotazione sull'asse Y (90 gradi)
-        0            // Rotazione sull'asse Z
-    );
-    const penHolderScaling = new BABYLON.Vector3(0.05, 0.05, 0.05);
-    loadExternalModel(scene,"models/penHolder.glb",penHolderPosition, penHolderRotation, penHolderScaling)
-    
-
-
     return scene;
 }
 
-
 function loadExternalModel(scene, modelPath, position, rotation, scaling) {
-        console.log("Tentativo di caricamento del modello:", modelPath);
-        return BABYLON.SceneLoader.ImportMeshAsync("", modelPath, "")
+    return BABYLON.SceneLoader.ImportMeshAsync("", modelPath, "")
         .then((result) => {
-            console.log("Modello caricato con successo:", result);
             const rootMesh = result.meshes[0];
             
             // Imposta posizione, rotazione e scala
@@ -363,38 +302,28 @@ function loadExternalModel(scene, modelPath, position, rotation, scaling) {
             rootMesh.rotation = rotation;
             rootMesh.scaling = scaling;
             
-            // Disabilita le collisioni per tutte le mesh individuali del modello
+            // Crea una bounding box semplificata per le collisioni invece di usare tutte le mesh
+            const boundingInfo = rootMesh.getBoundingInfo();
+            const dimensions = boundingInfo.boundingBox.extendSize.scale(2);
+            
+            const collisionBox = BABYLON.MeshBuilder.CreateBox("collisionBox", {
+                width: dimensions.x,
+                height: dimensions.y,
+                depth: dimensions.z
+            }, scene);
+            
+            collisionBox.position = rootMesh.position.clone();
+            collisionBox.rotation = rootMesh.rotation.clone();
+            collisionBox.scaling = rootMesh.scaling.clone();
+            collisionBox.parent = rootMesh;
+            collisionBox.visibility = 0; // Invisibile
+            collisionBox.checkCollisions = true;
+            
+            // Disabilita le collisioni per tutte le mesh del modello
             result.meshes.forEach((mesh) => {
                 mesh.checkCollisions = false;
             });
             
-            // Crea una bounding box semplificata per le collisioni
-            // Questa sarà leggermente più piccola della libreria reale
-            const boundingBox = BABYLON.MeshBuilder.CreateBox("libraryCollision", {
-                width: 0.9,    // Leggermente più stretto della libreria
-                height: 1.8,   // Altezza della libreria
-                depth: 0.3     // Profondità ridotta per evitare blocchi
-            }, scene);
-            
-            // Posiziona la bounding box in relazione alla libreria
-            boundingBox.position = new BABYLON.Vector3(
-                rootMesh.position.x,
-                rootMesh.position.y,
-                rootMesh.position.z
-            );
-            boundingBox.rotation = rootMesh.rotation.clone();
-            
-            // Rendi la bounding box invisibile e abilitane le collisioni
-            boundingBox.visibility = 0;
-            boundingBox.checkCollisions = true;
-            
-            // Collega la bounding box alla libreria
-            boundingBox.parent = rootMesh;
-            
             return rootMesh;
-        })
-        .catch(error => {
-            console.error("Errore dettagliato nel caricamento:", error);
         });
-
-    }
+}
